@@ -6,17 +6,22 @@ use frontend\models\User;
 use Faker\Factory;
 use Yii;
 use yii\web\NotFoundHttpException;
+use frontend\modules\user\models\forms\PictureForm;
+use yii\web\Response;
+use yii\web\UploadedFile;
 
 class ProfileController extends Controller
 {
     public function actionView($nickname)
     {
+        $modelPicture = new PictureForm();
         $currentUser = Yii::$app->user->identity;
         $user = self::findUser($nickname);
 
         return $this->render('view',[
             'user' => $user,
-            'currentUser' => $currentUser
+            'currentUser' => $currentUser,
+            'modelPicture' => $modelPicture
         ]);
     }
 
@@ -76,6 +81,29 @@ class ProfileController extends Controller
             return $user;
         }
         throw new NotFoundHttpException;
+    }
+
+    public function actionUploadPicture()
+    {
+        Yii::$app->response->format = Response::FORMAT_JSON;
+
+        $model = new PictureForm();
+        $model->picture = UploadedFile::getInstance($model, 'picture');
+
+        if ($model->validate())
+        {
+            $user = Yii::$app->user->identity;
+            $user->picture = Yii::$app->storage->saveUploadFile($model->picture);
+
+            if ($user->save(false, ['picture']))
+            {
+                return [
+                    'success' => true,
+                    'pictureUri' => Yii::$app->storage->getFile($user->picture),
+                ];
+            }
+            return ['success' => false, 'errors' => $model->getErrors()];
+        }
     }
 
 //    public function actionGenerate()

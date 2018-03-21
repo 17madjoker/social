@@ -6,6 +6,7 @@ use yii\base\NotSupportedException;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 use yii\web\IdentityInterface;
+use frontend\components\Storage;
 
 /**
  * User model
@@ -276,5 +277,20 @@ class User extends ActiveRecord implements IdentityInterface
             ->orderBy('username')
             ->asArray()
             ->all();
+    }
+
+    public function isFollowing(User $user)
+    {
+        $redis = Yii::$app->redis;
+        return $redis->sismember("user:{$this->getId()}:subscriptions", $user->getId());
+    }
+
+    public function getPicture()
+    {
+        if($this->picture)
+        {
+            return Yii::$app->storage->getFile($this->picture);
+        }
+        return Yii::getAlias('/img/default.png');
     }
 }
