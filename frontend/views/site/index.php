@@ -2,6 +2,7 @@
 
 /* @var $this yii\web\View */
 
+use yii\helpers\Url;
 $this->title = 'My Yii Application';
 ?>
 <div class="site-index">
@@ -47,6 +48,13 @@ $this->title = 'My Yii Application';
 
                 <p><a class="btn btn-default" href="http://www.yiiframework.com/extensions/">Yii Extensions &raquo;</a></p>
             </div>
+        </div>
+        <hr>
+        <div class="row">
+            <?php foreach ($users as $user): ?>
+                <p><a href="<?=Url::to(['/user/profile/view','nickname' => $user->getNickname()])?>"><?=$user->username?></a></p>
+                <hr>
+            <?php endforeach?>
         </div>
 
     </div>
