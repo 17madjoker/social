@@ -1,61 +1,60 @@
 <?php
 
-/* @var $this yii\web\View */
+/**
+ * @var $this yii\web\View
+ * @var $users[] frontend\models\User
+ */
 
+use Yii;
 use yii\helpers\Url;
+use yii\helpers\Html;
+use yii\web\JqueryAsset;
+
 $this->title = 'My Yii Application';
 ?>
 <div class="site-index">
 
-    <div class="jumbotron">
-        <h1>Congratulations!</h1>
+<?php if ($feeds): ?>
 
-        <p class="lead">You have successfully created your Yii-powered application.</p>
+    <?php foreach($feeds as $feed): ?>
 
-        <p><a class="btn btn-lg btn-success" href="http://www.yiiframework.com">Get started with Yii</a></p>
-    </div>
+    <div class="row">
 
-    <div class="body-content">
-
-        <div class="row">
-            <div class="col-lg-4">
-                <h2>Heading</h2>
-
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
-
-                <p><a class="btn btn-default" href="http://www.yiiframework.com/doc/">Yii Documentation &raquo;</a></p>
-            </div>
-            <div class="col-lg-4">
-                <h2>Heading</h2>
-
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
-
-                <p><a class="btn btn-default" href="http://www.yiiframework.com/forum/">Yii Forum &raquo;</a></p>
-            </div>
-            <div class="col-lg-4">
-                <h2>Heading</h2>
-
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
-
-                <p><a class="btn btn-default" href="http://www.yiiframework.com/extensions/">Yii Extensions &raquo;</a></p>
-            </div>
+        <div class="col-md-4">
+            <h3><a href="<?=Url::to(['/user/profile/view','nickname' => $feed->author_id])?>">
+                    <?=Html::encode($feed->author_name)?></a></h3>
+            <p><img src="<?= $feed->author_picture ?>" alt="" width="100" height="100" class="img-thumbnail"></p>
         </div>
-        <hr>
-        <div class="row">
-            <?php foreach ($users as $user): ?>
-                <p><a href="<?=Url::to(['/user/profile/view','nickname' => $user->getNickname()])?>"><?=$user->username?></a></p>
-                <hr>
-            <?php endforeach?>
+
+        <div class="col-md-8">
+            <p><img src="/uploads/<?= $feed->post_filename ?>" alt="" class="img-thumbnail"></p>
+            <p><b>Description: </b><?=Html::encode($feed->post_description)?></p>
+            <p><b>Likes <span class="glyphicon glyphicon-thumbs-up"></span>:</b> <?=$feed->countLikes()?></p>
+            <p>
+                <a href="" class="btn btn-primary button-like" data-id="<?=$feed->post_id?>"
+                    style="<?php echo ($currentUser->likesPost($feed->post_id)) ? 'display:none' : ''?>">
+                    Like <span class="glyphicon glyphicon-thumbs-up"></span>
+                </a>
+                <a href="" class="btn btn-default button-dislike" data-id="<?=$feed->post_id?>"
+                   style="<?php echo ($currentUser->likesPost($feed->post_id)) ? '' : 'display:none'?>">
+                    Dislike <span class="glyphicon glyphicon-thumbs-down"></span>
+                </a>
+            </p>
+            <mark><?= Yii::$app->formatter->asDatetime(Html::encode($feed->post_created_at)) ?></mark>
         </div>
 
     </div>
+    <hr>
+    <?php endforeach ?>
+
+<?php endif ?>
+
 </div>
+
+<?php
+
+$this->registerJsFile('@web/js/like.js',[
+    'depends' => JqueryAsset::className()
+]);
+
+?>

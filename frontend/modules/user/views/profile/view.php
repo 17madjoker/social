@@ -15,12 +15,14 @@ use dosamigos\fileupload\FileUpload;
     <p><img src="<?=$user->getPicture()?>" alt=""
             class="img-responsive img-thumbnail" width="200" height="200" id="profile-picture"></p>
 
-    <?php if($currentUser && !$user->equals($currentUser)): ?>
+    <?php if($currentUser && $user->equals($currentUser)): ?>
 
     <div class="alert alert-success" style="display: none"
          id="profile-image-success">Profile image set</div>
     <div class="alert alert-danger" style="display: none"
          id="profile-image-fail"></div>
+
+
 
     <p><?= FileUpload::widget([
             'model' => $modelPicture,

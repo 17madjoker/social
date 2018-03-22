@@ -4,5 +4,11 @@ return [
 
     'maxFileSize' => 1024*1024*2,
     'storagePath' => '@frontend/web/uploads/',
-    'storageUri' => '/uploads/'
+    'storageUri' => '/uploads/',
+
+    'postPicture' => [
+        'maxWidth' => 1024,
+        'maxHeight' => 768,
+    ],
+    'feedPostLimit' => 200
 ];

@@ -50,6 +50,9 @@ AppAsset::register($this);
             )
             . Html::endForm()
             . '</li>';
+        $menuItems[] = ['label' => 'My Profile',
+            'url' => ['/user/profile/view','nickname' => Yii::$app->user->identity->getNickname()]];
+        $menuItems[] = ['label' => 'Create Post', 'url' => ['/post/default/create']];
     }
     echo Nav::widget([
         'options' => ['class' => 'navbar-nav navbar-right'],
