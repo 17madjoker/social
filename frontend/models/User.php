@@ -293,4 +293,14 @@ class User extends ActiveRecord implements IdentityInterface
         }
         return Yii::getAlias('/img/default.png');
     }
+
+    public function deletePicture()
+    {
+        if ($this->picture and Yii::$app->storage->deleteFile($this->picture))
+        {
+            $this->picture = null;
+            return $this->save(false);
+        }
+        return true;
+    }
 }

@@ -55,4 +55,15 @@ class Storage extends Component implements StorageInterface
     {
         return Yii::getAlias(Yii::$app->params['storagePath']);
     }
+
+    public function deleteFile($filename)
+    {
+        $file = $this->getStoragePath().$filename;
+
+        if(file_exists($file))
+        {
+            return unlink($file);
+        }
+        return true;
+    }
 }

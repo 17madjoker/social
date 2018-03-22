@@ -11,10 +11,11 @@ use dosamigos\fileupload\FileUpload;
 ?>
 <div class="row">
     <h3>Hello, <?= Html::encode($user->username) ?></h3>
+
     <p><img src="<?=$user->getPicture()?>" alt=""
             class="img-responsive img-thumbnail" width="200" height="200" id="profile-picture"></p>
 
-    <?php if($currentUser->equals($user)): ?>
+    <?php if($currentUser && !$user->equals($currentUser)): ?>
 
     <div class="alert alert-success" style="display: none"
          id="profile-image-success">Profile image set</div>
@@ -34,7 +35,6 @@ use dosamigos\fileupload\FileUpload;
             'clientEvents' => [
                 'fileuploaddone' => 'function(e, data) {
                             if (data.result.success){
-                                $("#profile-image-success").show();
                                 $("#profile-image-fail").hide();
                                 $("#profile-picture").attr("src",data.result.pictureUri);
                             } else{
@@ -47,7 +47,10 @@ use dosamigos\fileupload\FileUpload;
                                 console.log(data);
                             }',
             ],
-        ]); ?></p>
+        ]); ?>
+
+    <a href="<?=Url::to(['/user/profile/delete-picture'])?>" class="btn btn-default">Delete image</a>
+    </p>
 
     <?php endif ?>
 
