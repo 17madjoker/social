@@ -514,3 +514,8 @@ footer .footer p.text {
 footer, .push {
     height: 80px; /* .push must be the same height as .footer */
 }
+
+#totallikes
+{
+    padding-left: 10px;
+}
