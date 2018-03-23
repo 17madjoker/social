@@ -2,10 +2,10 @@
 
 return [
     'user1' => [
-        'id' => 1,
+        'id' => 59,
         'username' => 'Eddard "Ned" Stark',
         'auth_key' => 'nwCpvIoiFARB02TvKp7OqbtmjiCULxa5',
-        'password_hash' => '$2y$13$VX0j9hAltNE54K6dKAi2GOjkBiw.CmN021GvPkqI3v0negF1eH.CK', // plain password: 111111
+        'password_hash' => '$2y$13$z/hbEof7bSTC3QZnjqigL.6u.hdODiKt9rKt1n3Jp2MT9smj.v0iS', // plain password: 111111
         'password_reset_token' => '1',
         'email' => '1@got.com',
         'status' => '10',
