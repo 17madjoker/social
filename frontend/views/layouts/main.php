@@ -10,6 +10,7 @@ use yii\widgets\Breadcrumbs;
 use frontend\assets\AppAsset;
 use common\widgets\Alert;
 use frontend\assets\FontAwesomeAsset;
+use Yii;
 
 AppAsset::register($this);
 FontAwesomeAsset::register($this);
@@ -47,7 +48,13 @@ FontAwesomeAsset::register($this);
                 <div class="col-md-4 col-sm-4 navicons-topbar">
                     <ul>
                         <li class="blog-search">
-                            <a href="#" title="Search"><i class="fa fa-search"></i></a>
+                            <?=Html::beginForm(['/site/language'])?>
+                            <?=Html::dropDownList('language',Yii::$app->language ,[
+                                'en-US' => 'English',
+                                'ru-RU' => 'Russian',
+                            ])?>
+                            <?=Html::submitButton('Change',['class' => 'btn-link'])?>
+                            <?=Html::endForm()?>
                         </li>
                     </ul>
                 </div>
@@ -63,23 +70,24 @@ FontAwesomeAsset::register($this);
                         <?php
 
                         $menuItems = [
-                            ['label' => 'Newsfeed', 'url' => ['/site/index']],
+                            ['label' => Yii::t('menu','Newsfeed'), 'url' => ['/site/index']],
                         ];
                         if (Yii::$app->user->isGuest) {
-                            $menuItems[] = ['label' => 'Signup', 'url' => ['/user/default/signup']];
-                            $menuItems[] = ['label' => 'Login', 'url' => ['/user/default/login']];
+                            $menuItems[] = ['label' => Yii::t('menu','Signup'), 'url' => ['/user/default/signup']];
+                            $menuItems[] = ['label' => Yii::t('menu','Login'), 'url' => ['/user/default/login']];
                         } else {
-                            $menuItems[] = ['label' => 'My page',
+                            $menuItems[] = ['label' => Yii::t('menu','My page'),
                                 'url' => ['/user/profile/view','nickname' => Yii::$app->user->identity->getNickname()]];
-                            $menuItems[] = ['label' => 'Create Post', 'url' => ['/post/default/create']];
+                            $menuItems[] = ['label' => Yii::t('menu','Create Post'), 'url' => ['/post/default/create']];
                             $menuItems[] = '<li>'
                                 . Html::beginForm(['/user/default/logout'], 'post')
                                 . Html::submitButton(
-                                    'Logout (' . Yii::$app->user->identity->username . ')',
-                                    ['class' => 'btn btn-link logout']
-                                )
+                                    Yii::t('menu', 'Logout ({username})',[
+                                        'username' => Yii::$app->user->identity->username
+                                    ]),['class' => 'btn btn-link logout'])
                                 . Html::endForm()
                                 . '</li>';
+
                         }
                         echo Nav::widget([
                             'options' => ['class' => 'menu navbar-nav navbar-right'],
