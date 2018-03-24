@@ -64,7 +64,12 @@ $this->title = 'Vikings';
                                         <span><?= Yii::$app->formatter->asDatetime(Html::encode($feed->post_created_at)) ?></span>
                                     </div>
                                     <div class="post-report">
-                                        <a href="#">Report post</a>
+                                        <?php if(!$feed->isReported($currentUser)): ?>
+                                        <a href="#" class="btn btn-default button-complain" data-id="<?php echo $feed->post_id; ?>">
+                                            Report post <i class="fa fa-cog fa-spin fa-fw icon-preloader" style="display:none"></i></a>
+                                        <?php else: ?>
+                                        <button class="btn btn-default disabled">Post has been reported</button>
+                                        <?php endif ?>
                                     </div>
                                 </div>
                             </article>
@@ -77,12 +82,16 @@ $this->title = 'Vikings';
         </div>
     </div>
 </div>
-<?php
 
+<?php
 $this->registerJsFile('@web/js/like.js', [
     'depends' => JqueryAsset::className()
 ]);
-
+?>
+<?php
+$this->registerJsFile('@web/js/complains.js', [
+    'depends' => JqueryAsset::className()
+]);
 ?>
 
 
