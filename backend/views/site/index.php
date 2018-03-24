@@ -43,5 +43,12 @@ $this->title = 'My Yii Application';
             </div>
         </div>
 
+        <?php
+        echo '<pre>';
+        var_dump(Yii::$app->user->can('viewComplaintsList'));
+        echo '</pre>';
+
+        ?>
+
     </div>
 </div>
